@@ -1,30 +1,36 @@
 import reflex as rx 
 
-class MyState(rx.State):
+class CounterState2(rx.State):
     count: int = 0
     #color : str = "red"
 
-    def increment(self):
-        self.count += 1
+    def increment(self, amount):
+        self.count += amount
         #self.color = "blue"
 
-def counter():
+    def decrement(self, amount):
+        self.count -= amount
+        #self.color = "blue"
+
+def counter_variable():
     return rx.hstack(
-        rx.heading(MyState.count),
+        rx.heading(CounterState2.count),
         #rx.heading("Counter", color=MyState.color),
         #rx.heading(MyState.count),
-        rx.button("Increment", on_click=MyState.increment),
+        rx.button("Increment by 1", on_click=lambda: CounterState2.increment(1)),
+        rx.button("Increment by 5", on_click=lambda: CounterState2.increment(5)),
+        rx.button("Decrement by 5", on_click=lambda: CounterState2.decrement(5)),
     )
 
-def button():
-    return rx.button("Click Me", border_radius="15px", font_size="18px", color_scheme="red")
+#def button():
+#    return rx.button("Click Me", border_radius="15px", font_size="18px", color_scheme="red")
 
 def index():
     return rx.box(
-        #rx.text("Hello World!!!"),
+        #rx.text("Hello World!!!"),||
         #half_filled_progress(),
         #button(),
-        counter(),
+        counter_variable(),
     )
 
 def half_filled_progress():
@@ -34,5 +40,6 @@ def half_filled_progress():
 
 app = rx.App()
 app.add_page(index)
+app.add_page(counter_variable)
 
 
