@@ -1,45 +1,28 @@
-import reflex as rx 
+import reflex as rx
 
-class CounterState2(rx.State):
-    count: int = 0
-    #color : str = "red"
+def check_even(num):
+    # Ensure num is an integer
+    if isinstance(num, tuple):
+        raise TypeError("Expected an integer, but got a tuple.")
+    return num % 2 == 0
 
-    def increment(self, amount):
-        self.count += amount
-        #self.color = "blue"
+class MyState3(rx.State):
+    count: int = 0,
+    text : str = "even"
 
-    def decrement(self, amount):
-        self.count -= amount
-        #self.color = "blue"
-
-def counter_variable():
-    return rx.hstack(
-        rx.heading(CounterState2.count),
-        #rx.heading("Counter", color=MyState.color),
-        #rx.heading(MyState.count),
-        rx.button("Increment by 1", on_click=lambda: CounterState2.increment(1)),
-        rx.button("Increment by 5", on_click=lambda: CounterState2.increment(5)),
-        rx.button("Decrement by 5", on_click=lambda: CounterState2.decrement(5)),
-    )
-
-#def button():
-#    return rx.button("Click Me", border_radius="15px", font_size="18px", color_scheme="red")
+    @rx.event
+    def increment(self):
+        if check_even(self.count):
+            self.text = "even"
+        else:
+            self.text = "odd"
+        self.count += 1
 
 def index():
     return rx.box(
-        #rx.text("Hello World!!!"),||
-        #half_filled_progress(),
-        #button(),
-        counter_variable(),
+        rx.heading(MyState3.text),
+        rx.button("Increment", on_click=MyState3.increment),
     )
-
-def half_filled_progress():
-    return rx.progress(value=50)
-
-
 
 app = rx.App()
 app.add_page(index)
-app.add_page(counter_variable)
-
-
